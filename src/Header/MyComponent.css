@@ -1,0 +1,36 @@
+/* MyComponent.css */
+.my-component {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .my-component h1 {
+    color: #333;
+  }
+  
+  .my-component p {
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .data {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .data h2 {
+    color: #007bff;
+  }
+  
+  .data p {
+    color: #333;
+  }
+  
