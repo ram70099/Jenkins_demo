@@ -2,33 +2,33 @@ pipeline {
     agent any
 
     options {
-        // Avoid default SCM checkout to prevent conflict with our custom checkout
         skipDefaultCheckout(true)
     }
 
     tools {
-        nodejs 'nodejs'  // Make sure NodeJS is configured in Jenkins global tools
+        // Make sure this exact name is configured in Jenkins > Manage Jenkins > Global Tool Configuration
+        nodejs 'nodejs'
     }
 
     environment {
-        // Define environment variables for site ID and access token
-        NETLIFY_SITE_ID = credentials('1c4f2446-f5d5-4f44-b23d-399af5022494')
-        NETLIFY_ACCESS_TOKEN = credentials('nfp_EWLu35miw8fRAeq2fX981T1hyaYo6HcQ8317')
+        // These credentials must be set as "Secret text" in Jenkins
+        NETLIFY_SITE_ID      = credentials('1c4f2446-f5d5-4f44-b23d-399af5022494')         // Replace with actual credentials ID
+        NETLIFY_ACCESS_TOKEN = credentials('nfp_EWLu35miw8fRAeq2fX981T1hyaYo6HcQ8317')    // Replace with actual credentials ID
     }
 
     stages {
         stage("Checkout Code") {
             steps {
                 git branch: 'main', 
-                    url: 'https://github.com/ram70099/Jenkins_demo.git',
-                    credentialsId: 'dockerhub.creds'  // Optional: use if you have private repos or need auth
+                    url: 'https://github.com/ram70099/Jenkins_demo.git'
+                    // Remove credentialsId if public repo
             }
         }
 
         stage("Install Dependencies") {
             steps {
                 bat "npm install --verbose"
-                bat "npm install -g netlify-cli"  // Install Netlify CLI globally
+                bat "npm install -g netlify-cli"
             }
         }
 
@@ -40,7 +40,6 @@ pipeline {
 
         stage("Check package.json") {
             steps {
-                echo "Contents of package.json:"
                 bat "type package.json"
             }
         }
@@ -59,12 +58,9 @@ pipeline {
 
         stage("Deploy to Netlify") {
             steps {
-                script {
-                    // Deploy to Netlify using the Netlify CLI
-                    bat """
-                    netlify deploy --dir=build --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_ACCESS_TOKEN
-                    """
-                }
+                bat """
+                    netlify deploy --dir=build --prod --site=%NETLIFY_SITE_ID% --auth=%NETLIFY_ACCESS_TOKEN%
+                """
             }
         }
     }
