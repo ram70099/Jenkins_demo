@@ -6,14 +6,14 @@ pipeline {
     }
 
     tools {
-        // Make sure this exact name is configured in Jenkins > Manage Jenkins > Global Tool Configuration
+        // This must match the NodeJS tool name configured in Jenkins > Global Tool Configuration
         nodejs 'nodejs'
     }
 
     environment {
-        // These credentials must be set as "Secret text" in Jenkins
-        NETLIFY_SITE_ID      = credentials('1c4f2446-f5d5-4f44-b23d-399af5022494')         // Replace with actual credentials ID
-        NETLIFY_ACCESS_TOKEN = credentials('nfp_EWLu35miw8fRAeq2fX981T1hyaYo6HcQ8317')    // Replace with actual credentials ID
+        // Use Jenkins credentials of type "Secret text" with these IDs
+        NETLIFY_SITE_ID      = credentials('1c4f2446-f5d5-4f44-b23d-399af5022494')        // Should be like "1c4f2446-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        NETLIFY_ACCESS_TOKEN = credentials('nfp_EWLu35miw8fRAeq2fX981T1hyaYo6HcQ8317')   // Should be like "nfp_XXXX..."
     }
 
     stages {
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 git branch: 'main', 
                     url: 'https://github.com/ram70099/Jenkins_demo.git'
-                    // Remove credentialsId if public repo
+                    // No credentialsId needed if public repo
             }
         }
 
@@ -59,6 +59,8 @@ pipeline {
         stage("Deploy to Netlify") {
             steps {
                 bat """
+                    echo Deploying to Netlify...
+                    echo Site ID: %NETLIFY_SITE_ID%
                     netlify deploy --dir=build --prod --site=%NETLIFY_SITE_ID% --auth=%NETLIFY_ACCESS_TOKEN%
                 """
             }
@@ -70,7 +72,7 @@ pipeline {
             echo '✅ Build and Deploy Successful!'
         }
         failure {
-            echo '❌ Build or Deploy Failed!'
+            echo '❌ Build or Deploy Failed! Check the logs.'
         }
     }
 }
