@@ -10,6 +10,12 @@ pipeline {
         nodejs 'nodejs'  // Make sure NodeJS is configured in Jenkins global tools
     }
 
+    environment {
+        // Define environment variables for site ID and access token
+        NETLIFY_SITE_ID = credentials('1c4f2446-f5d5-4f44-b23d-399af5022494')
+        NETLIFY_ACCESS_TOKEN = credentials('nfp_1WovDvnEfjPmB8ZrLYb7aYd7EAh3iXzabcd4')
+    }
+
     stages {
         stage("Checkout Code") {
             steps {
@@ -22,6 +28,7 @@ pipeline {
         stage("Install Dependencies") {
             steps {
                 bat "npm install --verbose"
+                bat "npm install -g netlify-cli"  // Install Netlify CLI globally
             }
         }
 
@@ -49,14 +56,25 @@ pipeline {
                 archiveArtifacts artifacts: 'build/**/*', fingerprint: true
             }
         }
+
+        stage("Deploy to Netlify") {
+            steps {
+                script {
+                    // Deploy to Netlify using the Netlify CLI
+                    bat """
+                    netlify deploy --dir=build --prod --site=$NETLIFY_SITE_ID --auth=$NETLIFY_ACCESS_TOKEN
+                    """
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo '✅ Build Successful!'
+            echo '✅ Build and Deploy Successful!'
         }
         failure {
-            echo '❌ Build Failed!'
+            echo '❌ Build or Deploy Failed!'
         }
     }
 }
