@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    options {
+        // Avoid default SCM checkout to prevent conflict with our custom checkout
+        skipDefaultCheckout(true)
+    }
+
     tools {
         nodejs 'nodejs'  // Make sure NodeJS is configured in Jenkins global tools
     }
@@ -8,7 +13,9 @@ pipeline {
     stages {
         stage("Checkout Code") {
             steps {
-                git 'https://github.com/ram70099/Jenkins_demo.git'
+                git branch: 'main', 
+                    url: 'https://github.com/ram70099/Jenkins_demo.git',
+                    credentialsId: 'dockerhub.creds'  // Optional: use if you have private repos or need auth
             }
         }
 
@@ -26,10 +33,8 @@ pipeline {
 
         stage("Check package.json") {
             steps {
-                script {
-                    echo "Contents of package.json:"
-                    bat 'type package.json'
-                }
+                echo "Contents of package.json:"
+                bat "type package.json"
             }
         }
 
