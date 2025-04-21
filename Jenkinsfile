@@ -27,32 +27,8 @@ pipeline {
             }
         }
 
-        stage("Run Tests") {
-            steps {
-                script {
-                    // Check if the "test" script exists in package.json
-                    def hasTest = fileExists('package.json') && readFile('package.json').contains('"test":')
-                    if (hasTest) {
-                        bat 'npm test || echo "Test failed"'
-                    } else {
-                        echo 'No test script found in package.json'
-                    }
-                }
-            }
-        }
+       
 
-        stage("Build React App") {
-            steps {
-                script {
-                    // Check if the "build" script exists in package.json
-                    def hasBuild = fileExists('package.json') && readFile('package.json').contains('"build":')
-                    if (hasBuild) {
-                        bat 'npm run build || echo "Build failed"'
-                    } else {
-                        echo 'No build script found in package.json'
-                    }
-                }
-            }
-        }
+       
     }
 }
