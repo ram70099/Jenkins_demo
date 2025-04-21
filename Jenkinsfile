@@ -13,7 +13,7 @@ pipeline {
     environment {
         // Define environment variables for site ID and access token
         NETLIFY_SITE_ID = credentials('1c4f2446-f5d5-4f44-b23d-399af5022494')
-        NETLIFY_ACCESS_TOKEN = credentials('nfp_Dzf92qapQAFfWo42YhoPDZegrobeUJURbcd5')
+        NETLIFY_ACCESS_TOKEN = credentials('nfp_EWLu35miw8fRAeq2fX981T1hyaYo6HcQ8317')
     }
 
     stages {
