@@ -18,6 +18,12 @@ pipeline {
             }
         }
 
+        stage("List Directory") {
+            steps {
+                bat "dir"
+            }
+        }
+
         stage("Check package.json") {
             steps {
                 script {
