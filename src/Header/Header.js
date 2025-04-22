@@ -25,7 +25,7 @@ const MyComponent = () => {
   return (
     <div className="my-component">
       <h1>Hello, this is a simple React component!</h1>
-      <p>React is veryyyfff awesome!</p>
+      <p>React is good</p>
 
       {loading ? (
         <p>Loading data...</p>  // Show loading message while fetching data
